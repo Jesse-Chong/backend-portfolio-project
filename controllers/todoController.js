@@ -11,6 +11,13 @@ const {
     updateTodo
 }  = require('../queries/todo');
 
+// Validations
+const {
+    checkTitle,
+    checkDescription,
+    checkDate
+} = require('../validations/checkTodos')
+
 todo.get('/', async (req, res) => {
     const allTodos = await getAllTodos();
     if (allTodos[0]) {
@@ -30,7 +37,12 @@ todo.get('/:id', async (req, res) => {
         }
 });
 
-todo.post('/', async (req, res) => {
+todo.post(
+    '/', 
+    checkTitle,
+    checkDescription,
+    checkDate,
+    async (req, res) => {
     try {
         const todo = await createTodo(req.body);
         res.json(todo);
@@ -49,7 +61,12 @@ todo.delete('/:id', async (req,res) => {
     }
 })
 
-todo.put('/:id', async (req, res) => {
+todo.put(
+    '/:id',
+    checkTitle,
+    checkDescription,
+    checkDate,
+    async (req, res) => {
     try {
     const { id } = req.params;
     const updatedTodo = await updateTodo(id, req.body);
