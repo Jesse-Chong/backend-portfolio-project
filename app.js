@@ -11,6 +11,9 @@ app.get("/", (req, res) => {
   res.send("Time to get priorities straight!");
 });
 
+const todoController = require('./controllers/todoController');
+app.use('/todo', todoController)
+
 app.get("*", (req, res) => {
   res.status(404).send("Page Not Found");
 });

@@ -7,7 +7,7 @@ INSERT INTO todo_tb (todo_title, todo_description, todo_date, todo_istrue) VALUE
 ('Feed dog', 'Don''t''know why you would forget but feed at 7 am and 7 pm', '2023-11-23', false),
 ('Son turns 1', 'You really have to make a reminder for your child''s'' birthday?', '2023-11-30', true);
 
-INSERT INTO checklist_tb (checklist_description, checklist_istrue, checklist_id) VALUES
+INSERT INTO checklist_tb (checklist_description, checklist_istrue, todo_id) VALUES
 ('1 lb carrots', false, 1),
 ('1 lb potatoes', false, 1),
 ('Two 20oz ribeye steaks', false, 1),
@@ -20,4 +20,4 @@ INSERT INTO checklist_tb (checklist_description, checklist_istrue, checklist_id)
 ('Table covers, streamers, banners', false, 5),
 ('Pickup present from store', false, 5),
 ('Pick up catering order at 4pm', false, 5),
-('Pick up soda and chips from the store', false, 5)
+('Pick up soda and chips from the store', false, 5);
