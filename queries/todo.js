@@ -9,11 +9,19 @@ const getAllTodos = async () => {
       }
 };
 
+// instanceof is used to check if an object belongs to a particular class. In this case it is checking
+// if the error is a general javascript error object && also checks if specific error code value of 0
+// which would be QueryResultError indicating no rows returned.
 const getTodo = async (id) => {
     try {
         const oneTodo = await db.one("SELECT * FROM todo_tb WHERE id=$1", id);
         return oneTodo;
     } catch (error) {
+        // Check if it's a QueryResultError with code 0
+        if (error instanceof Error && error.code === 0) {
+        // Return null for non-existing todos
+            return null;
+        }
         return error;
     }
 };

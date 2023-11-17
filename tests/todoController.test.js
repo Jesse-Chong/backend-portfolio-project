@@ -112,5 +112,27 @@ describe("Todo Controller", () => {
         });
       });
     });
+
+    describe('GET /todos/:id', () => {
+        describe('GET', () => {
+          it('with correct id - fetches the correct todo with the correct key/properties', async () => {
+            const response = await request(app).get('/todo/1');
+            const parsedRes = response.body;
+      
+            expect(parsedRes.todo_title).toEqual('Grocery shopping');
+            expect(parsedRes.todo_description).toEqual('Make sure to get ingredients for dinner');
+            expect(parsedRes.todo_date).toEqual('2023-11-15T05:00:00.000Z');
+            expect(parsedRes.todo_istrue).toEqual(false);
+          });
+      
+          it('with incorrect id - sets status to 404 and returns error key', async () => {
+            const response = await request(app).get('/todo/98989898');
+            expect(response.statusCode).toEqual(404);
+            expect(response.body.error).toEqual('todo not found');
+          });
+        });
+      });
+
+      
   });
 });
