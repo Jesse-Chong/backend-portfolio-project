@@ -15,10 +15,13 @@ const checkTitle = (req, res, next) => {
   };
 
   const checkDate = (req, res, next) => {
-    if (req.body.todo_date) {
+     // Regex for YYYY-MM-DD format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+     // checks if todo_date is same as formatted date
+    if (req.body.todo_date && dateRegex.test(req.body.todo_date)) {
       return next();
     } else {
-      res.status(400).json({ error: "Date is required" });
+      res.status(400).json({ error: "Invalid date format for todo_date. Must be in the format YYYY-MM-DD." });
     }
   };
 
