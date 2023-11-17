@@ -133,6 +133,73 @@ describe("Todo Controller", () => {
         });
       });
 
+      describe('PUT /todos/:id', () => {
+        describe('PUT', () => {
+          describe('handling a proper update request', () => {
+            it('can update a todo with all the fields', async () => {
+              const response = await request(app)
+                .put('/todo/1')
+                .send({
+                  todo_title: 'Updated Title',
+                  todo_description: 'Updated Description',
+                  todo_date: '2023-12-01',
+                  todo_istrue: true,
+                });
       
+              expect(response.statusCode).toBe(200);
+              const updatedTodo = response.body;
+              expect(updatedTodo.id).toEqual(1);
+              expect(updatedTodo.todo_title).toEqual('Updated Title');
+              expect(updatedTodo.todo_description).toEqual('Updated Description');
+              expect(updatedTodo.todo_date).toEqual('2023-12-01T05:00:00.000Z');
+              expect(updatedTodo.todo_istrue).toEqual(true);
+            });
+          });
+      
+          describe('handling an improper update request', () => {
+            it('will return an error if todo_title is missing', async () => {
+              const response = await request(app)
+                .put('/todo/1')
+                .send({
+                  todo_description: 'Updated Description',
+                  todo_date: '2023-12-01',
+                  todo_istrue: true,
+                });
+      
+              expect(response.statusCode).toBe(400);
+              expect(response.body.error).toEqual('Title is required');
+            });
+      
+            it('will return an error if todo_description is missing', async () => {
+              const response = await request(app)
+                .put('/todo/1')
+                .send({
+                  todo_title: 'Updated Title',
+                  todo_date: '2023-12-01',
+                  todo_istrue: true,
+                });
+      
+              expect(response.statusCode).toBe(400);
+              expect(response.body.error).toEqual('Description is required');
+            });
+      
+            it('will return an error if todo_date is not in the proper format', async () => {
+              const response = await request(app)
+                .put('/todo/1')
+                .send({
+                  todo_title: 'Updated Title',
+                  todo_description: 'Updated Description',
+                  todo_date: '1-13-2023',
+                  todo_istrue: true,
+                });
+      
+              expect(response.statusCode).toBe(400);
+              expect(response.body.error).toEqual(
+                'Invalid date format for todo_date. Must be in the format YYYY-MM-DD.'
+              );
+            });
+          });
+        });
+    });
   });
 });
