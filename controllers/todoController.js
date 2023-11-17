@@ -2,6 +2,9 @@
 const express = require("express");
 const todo = express.Router();
 
+const checklistController = require('./checklistController');
+todo.use('/:todo_id/checklist', checklistController);
+
 // QUERIES
 const {
     getAllTodos,
@@ -23,7 +26,7 @@ todo.get('/', async (req, res) => {
     if (allTodos[0]) {
         res.status(200).json(allTodos);
     } else {
-        res.status(505).json({ error: "todo not error" });
+        res.status(404).json({ error: "todo not found" });
     }
 });
 
