@@ -13,6 +13,9 @@ const {
     updateChecklist,
 } = require('../queries/checklist')
 
+// Validations
+const { checkCheckListDescription } = require('../validations/checkChecklist')
+
 checklist.get('/', async (req, res) => {
     const { todo_id } = req.params;
     const allChecklist = await getAllChecklist(todo_id);
@@ -37,7 +40,10 @@ checklist.get('/:id', async (req, res) => {
     }
 });
 
-checklist.put('/:id', async (req, res) => {
+checklist.put(
+    '/:id',
+    checkCheckListDescription,
+    async (req, res) => {
     const { todo_id, id } = req.params;
     const updatedChecklist = await updateChecklist(id, { todo_id, ...req.body });
     if (updatedChecklist.id) {
@@ -47,7 +53,10 @@ checklist.put('/:id', async (req, res) => {
     }
 });
 
-checklist.post('/', async (req, res) => {
+checklist.post(
+    '/',
+    checkCheckListDescription,
+    async (req, res) => {
     const { todo_id } = req.params;
     const createdChecklist = await createChecklist({ todo_id, ...req.body });
     res.status(200).json(createdChecklist);
