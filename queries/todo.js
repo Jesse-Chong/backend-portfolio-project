@@ -61,10 +61,24 @@ const updateTodo = async (id, todo) => {
     }
 };
 
+const updateCompletionStatus = async (id, is_true) => {
+    try {
+      const updatedTodo = await db.one(
+        "UPDATE todo_tb SET todo_istrue=$1 WHERE id=$2 RETURNING *",
+        [is_true, id]
+      );
+      return updatedTodo;
+    } catch (error) {
+      console.error("Error updating completion status:", error);
+      throw error;
+    }
+  };
+
 module.exports = {
     getAllTodos,
     getTodo,
     createTodo,
     deleteTodo,
-    updateTodo
+    updateTodo,
+    updateCompletionStatus
 }

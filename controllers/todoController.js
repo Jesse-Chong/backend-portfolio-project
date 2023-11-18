@@ -11,7 +11,8 @@ const {
     getTodo,
     createTodo,
     deleteTodo,
-    updateTodo
+    updateTodo,
+    updateCompletionStatus
 }  = require('../queries/todo');
 
 // Validations
@@ -82,5 +83,27 @@ todo.put(
         res.status(404).json({ error: "todo not found"})
     }
 })
+
+todo.put("/:id/completion", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const todoEntry = await getTodo(Number(id));
+      if (!todoEntry) {
+        return res.status(404).json("Todo entry not found");
+      }
+      const updatedTodoEntry = await updateCompletionStatus(
+        id,
+        !todoEntry.todo_istrue
+      );
+      if (updatedTodoEntry.id) {
+        res.status(200).json(updatedTodoEntry);
+      } else {
+        res.status(500).json("Server error: Could not update completion status.");
+      }
+    } catch (error) {
+      console.error("Server error:", error);
+      res.status(500).json("Server error: Could not update completion status.");
+    }
+  });
 
 module.exports = todo;

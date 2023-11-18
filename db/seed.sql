@@ -1,11 +1,11 @@
 \c priorities_db;
 
 INSERT INTO todo_tb (todo_title, todo_description, todo_date, todo_istrue) VALUES
-('Grocery shopping', 'Make sure to get ingredients for dinner', '2023-11-15', false),
+('grocery shopping', 'make sure to get ingredients for dinner.', '2023-11-15', false),
 ('Clean bathroom', 'Clean the bathroom before mom gets home!', '2023-11-18', false),
 ('Get haircut', 'Dont forget your haircut appointment at 6pm', '2023-11-18', false),
 ('Feed dog', 'Don''t know why you would forget but feed at 7 am and 7 pm', '2023-11-23', false),
-('Son turns 1', 'You really have to make a reminder for your child''s birthday?', '2023-11-30', true)
+('Son turns 1', 'You really have to make a reminder for your child''s birthday?', '2023-11-30', true);
 
 INSERT INTO checklist_tb (checklist_description, checklist_istrue, todo_id) VALUES
 ('1 lb carrots', false, 1),
