@@ -29,21 +29,21 @@ describe("Todo Controller", () => {
             id: 1,
             todo_title: "Grocery shopping",
             todo_description: "Make sure to get ingredients for dinner",
-            todo_date: "2023-11-15T05:00:00.000Z",
+            todo_date: "2023-11-15",
             todo_istrue: false,
           },
           {
             id: 2,
             todo_title: "Clean bathroom",
             todo_description: "Clean the bathroom before mom gets home!",
-            todo_date: "2023-11-18T05:00:00.000Z",
+            todo_date: "2023-11-18",
             todo_istrue: false,
           },
           {
             id: 3,
             todo_title: "Get haircut",
             todo_description: "Dont forget your haircut appointment at 6pm",
-            todo_date: "2023-11-18T05:00:00.000Z",
+            todo_date: "2023-11-18",
             todo_istrue: false,
           },
           {
@@ -51,7 +51,7 @@ describe("Todo Controller", () => {
             todo_title: "Feed dog",
             todo_description:
               "Don't'know why you would forget but feed at 7 am and 7 pm",
-            todo_date: "2023-11-23T05:00:00.000Z",
+            todo_date: "2023-11-23",
             todo_istrue: false,
           },
           {
@@ -59,7 +59,7 @@ describe("Todo Controller", () => {
             todo_title: "Son turns 1",
             todo_description:
               "You really have to make a reminder for your child's' birthday?",
-            todo_date: "2023-11-30T05:00:00.000Z",
+            todo_date: "2023-11-30",
             todo_istrue: true,
           },
         ];
@@ -77,7 +77,7 @@ describe("Todo Controller", () => {
           const response = await request(app).post("/todo").send({
             todo_title: "",
             todo_description: "Description for the new task",
-            todo_date: "2023-12-01T05:00:00.000Z",
+            todo_date: "2023-12-01",
             todo_istrue: false,
           });
 
@@ -89,7 +89,7 @@ describe("Todo Controller", () => {
           const response = await request(app).post("/todo").send({
             todo_title: "New Task",
             todo_description: "",
-            todo_date: "2023-12-01T05:00:00.000Z",
+            todo_date: "2023-12-01",
             todo_istrue: false,
           });
 
@@ -121,7 +121,7 @@ describe("Todo Controller", () => {
       
             expect(parsedRes.todo_title).toEqual('Grocery shopping');
             expect(parsedRes.todo_description).toEqual('Make sure to get ingredients for dinner');
-            expect(parsedRes.todo_date).toEqual('2023-11-15T05:00:00.000Z');
+            expect(parsedRes.todo_date).toEqual('2023-11-15');
             expect(parsedRes.todo_istrue).toEqual(false);
           });
       
@@ -199,6 +199,28 @@ describe("Todo Controller", () => {
               );
             });
           });
+        });
+    });
+
+    describe('DELETE /todos/:id', () => {
+        describe('DELETE', () => {
+            it('can delete a todo with a valid id', async () => {
+                const response = await request(app).delete('/todo/1');
+    
+                expect(response.statusCode).toBe(200);
+                expect(response.body.message).toEqual('todo deleted successfully');
+    
+                const deletedTodoResponse = await request(app).get('/todo/1');
+                expect(deletedTodoResponse.statusCode).toBe(404);
+                expect(deletedTodoResponse.body.error).toEqual('todo not found');
+            });
+    
+            it('returns a 404 error if trying to delete a non-existing todo', async () => {
+                const response = await request(app).delete('/todo/999');
+    
+                expect(response.statusCode).toBe(404);
+                expect(response.body.error).toEqual('todo not found');
+            });
         });
     });
   });

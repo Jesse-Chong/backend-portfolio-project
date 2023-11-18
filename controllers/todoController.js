@@ -32,13 +32,16 @@ todo.get('/', async (req, res) => {
 
 todo.get('/:id', async (req, res) => {
     const { id } = req.params;
-        const todo = await getTodo(id);
-        if (todo) {
-            res.json(todo);
-        } else {
-            res.status(404).json({ error: "todo not found" })
-        }
-});
+    const todo = await getTodo(id);
+  
+    if (todo) {
+        // Isolate the string starting at T basically removing T05:00:00.000Z from the end
+      todo.todo_date = todo.todo_date.toISOString().split('T')[0];
+      res.json(todo);
+    } else {
+      res.status(404).json({ error: "todo not found" });
+    }
+  });
 
 todo.post(
     '/', 
@@ -54,15 +57,16 @@ todo.post(
     }
 });
 
-todo.delete('/:id', async (req,res) => {
+todo.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const deletedTodo = await deleteTodo(id);
+    
     if (deletedTodo.id) {
-        res.status(200).json(deletedTodo);
+        res.status(200).json({ message: "todo deleted successfully" });
     } else {
-        res.status(404).json("todo not found")
+        res.status(404).json({ error: "todo not found" });
     }
-})
+});
 
 todo.put(
     '/:id',

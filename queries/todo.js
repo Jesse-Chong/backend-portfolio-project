@@ -1,13 +1,12 @@
 const db = require('../db/dbConfig');
 
 const getAllTodos = async () => {
-    try {
-        const allTodos = await db.any("SELECT * FROM todo_tb");
-        return allTodos;
-      } catch (error) {
-        return error;
-      }
-};
+    const allTodos = await db.any('SELECT * FROM todo_tb');
+    return allTodos.map(todo => ({
+      ...todo,
+      todo_date: todo.todo_date.toISOString().split('T')[0],
+    }));
+  };
 
 // instanceof is used to check if an object belongs to a particular class. In this case it is checking
 // if the error is a general javascript error object && also checks if specific error code value of 0
@@ -56,9 +55,9 @@ const updateTodo = async (id, todo) => {
             "UPDATE todo_tb SET todo_title=$1, todo_description=$2, todo_date=$3, todo_istrue=$4 WHERE id=$5 RETURNING *",
             [todo.todo_title, todo.todo_description, todo.todo_date, todo.todo_istrue, id]
         );
-        return updatedTodo
+        return updatedTodo;
     } catch (error) {
-        return error;
+        throw error;
     }
 };
 
