@@ -19,7 +19,8 @@ const {
 const {
     checkTitle,
     checkDescription,
-    checkDate
+    checkDate,
+    checkCategory
 } = require('../validations/checkTodos')
 
 todo.get('/', async (req, res) => {
@@ -37,7 +38,7 @@ todo.get('/:id', async (req, res) => {
   
     if (todo) {
         // Isolate the string starting at T basically removing T05:00:00.000Z from the end
-      todo.todo_date = todo.todo_date.toISOString().split('T')[0];
+        todo.todo_date = todo.todo_date ? todo.todo_date.toISOString().split('T')[0] : null;
       res.json(todo);
     } else {
       res.status(404).json({ error: "todo not found" });
@@ -49,6 +50,7 @@ todo.post(
     checkTitle,
     checkDescription,
     checkDate,
+    checkCategory,
     async (req, res) => {
     try {
         const todo = await createTodo(req.body);
@@ -74,6 +76,7 @@ todo.put(
     checkTitle,
     checkDescription,
     checkDate,
+    checkCategory,
     async (req, res) => {
     try {
     const { id } = req.params;

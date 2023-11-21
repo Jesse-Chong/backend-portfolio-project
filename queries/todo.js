@@ -21,15 +21,16 @@ const getTodo = async (id) => {
         // Return null for non-existing todos
             return null;
         }
-        return error;
+        console.error("Error fetching todo:", error);
+        return { error: "Error fetching todo", details: error.message };
     }
 };
 
 const createTodo = async (todo) => {
     try {
         const newTodo = await db.one(
-            "INSERT INTO todo_tb (todo_title, todo_description, todo_date, todo_istrue) VALUES($1, $2, $3, $4) RETURNING *",
-            [todo.todo_title, todo.todo_description, todo.todo_date, todo.todo_istrue]
+            "INSERT INTO todo_tb (todo_title, todo_description, todo_date, todo_istrue, todo_category) VALUES($1, $2, $3, $4, $5) RETURNING *",
+            [todo.todo_title, todo.todo_description, todo.todo_date, todo.todo_istrue, todo.todo_category]
         )
         return newTodo;
     } catch (error) {
@@ -52,8 +53,8 @@ const deleteTodo = async (id) => {
 const updateTodo = async (id, todo) => {
     try {
         const updatedTodo = await db.one(
-            "UPDATE todo_tb SET todo_title=$1, todo_description=$2, todo_date=$3, todo_istrue=$4 WHERE id=$5 RETURNING *",
-            [todo.todo_title, todo.todo_description, todo.todo_date, todo.todo_istrue, id]
+            "UPDATE todo_tb SET todo_title=$1, todo_description=$2, todo_date=$3, todo_istrue=$4, todo_category=$5 WHERE id=$6 RETURNING *",
+            [todo.todo_title, todo.todo_description, todo.todo_date, todo.todo_istrue, todo.todo_category, id]
         );
         return updatedTodo;
     } catch (error) {

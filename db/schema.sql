@@ -15,5 +15,6 @@ CREATE TABLE todo_tb (
     todo_title TEXT NOT NULL,
     todo_description VARCHAR NOT NULL, 
     todo_date DATE NOT NULL,
-    todo_istrue BOOLEAN
+    todo_istrue BOOLEAN,
+    todo_category VARCHAR
 );

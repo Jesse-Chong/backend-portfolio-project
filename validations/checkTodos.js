@@ -25,6 +25,17 @@ const checkTitle = (req, res, next) => {
     }
   };
 
+  const checkCategory = (req, res, next) => {
+    const validCategories = ['personal', 'work'];
+    const category = req.body.todo_category;
+  
+    if (validCategories.includes(category)) {
+      return next();
+    } else {
+      res.status(400).json({ error: "Invalid category. Valid categories are 'personal' and 'work'." });
+    }
+  };
+
 module.exports = {
-    checkTitle, checkDescription, checkDate
+    checkTitle, checkDescription, checkDate, checkCategory
 }
