@@ -11,6 +11,7 @@ const {
     createChecklist,
     deleteChecklist,
     updateChecklist,
+    updateChecklistStatus
 } = require('../queries/checklist')
 
 // Validations
@@ -71,5 +72,33 @@ checklist.delete('/:id', async (req, res) => {
         res.status(404).json({ error: "checklist not found" })
     }
 });
+
+checklist.put("/:id/completion", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const checklistEntry = await getChecklist(Number(id));
+      if (!checklistEntry) {
+        return res.status(404).json("Checklist entry not found");
+      }
+  
+      const updatedChecklistEntry = await updateChecklistStatus(
+        id,
+        !checklistEntry.checklist_istrue
+      );
+  
+      if (updatedChecklistEntry.id) {
+        res.status(200).json(updatedChecklistEntry);
+      } else {
+        res
+          .status(500)
+          .json("Server error: Could not update completion status.");
+      }
+    } catch (error) {
+      console.error("Server error:", error);
+      res
+        .status(500)
+        .json("Server error: Could not update completion status.");
+    }
+  });
 
 module.exports = checklist

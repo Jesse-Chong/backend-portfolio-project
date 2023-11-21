@@ -58,10 +58,25 @@ const getAllChecklist = async (todo_id) => {
     }
 };
 
+const updateChecklistStatus = async (id, isTrue) => {
+  try {
+    const updatedChecklist = await db.one(
+      "UPDATE checklist_tb SET checklist_istrue=$1 WHERE id=$2 RETURNING *",
+      [isTrue, id]
+    );
+    return updatedChecklist;
+  } catch (error) {
+    console.error("Error updating completion status:", error);
+    throw error;
+  }
+};
+
+
 module.exports = {
     getAllChecklist,
     getChecklist,
     createChecklist,
     deleteChecklist,
     updateChecklist,
+    updateChecklistStatus
   };
