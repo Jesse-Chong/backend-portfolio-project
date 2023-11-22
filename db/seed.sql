@@ -5,7 +5,7 @@ INSERT INTO todo_tb (todo_title, todo_description, todo_date, todo_istrue, todo_
 ('Clean bathroom', 'Clean the bathroom before mom gets home!', '2023-11-18', false, 'personal'),
 ('Get haircut', 'Dont forget your haircut appointment at 6pm', '2023-11-18', false, 'personal'),
 ('Feed dog', 'Don''t know why you would forget but feed at 7 am and 7 pm', '2023-11-23', false, 'work'),
-('Son turns 1', 'You really have to make a reminder for your child''s birthday?', '2023-11-30', true, 'work');
+('Son turns 1', 'You really have to make a reminder for your child''s birthday?', '2023-11-30', false, 'work');
 
 INSERT INTO checklist_tb (checklist_description, checklist_istrue, todo_id) VALUES
 ('1 lb carrots', false, 1),
